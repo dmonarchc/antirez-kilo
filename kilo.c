@@ -69,7 +69,7 @@ struct editorConfig E;
 
 void editorSetStatusMessage(const char *fmt, ...);
 void editorRefreshScreen();
-void *editorPrompt(char *prompt);
+char *editorPrompt(char *prompt);
 
 /*** terminal***/
 
@@ -353,7 +353,7 @@ char *editorRowsToString(int *buflen) {
     totlen += E.row[j].size + 1;
   *buflen = totlen;
 
-  char *buf = malloce(totlen);
+  char *buf = malloc(totlen);
   char *p = buf;
   for (j = 0; j < E.numrows; j++) {
     memcpy(p, E.row[j].chars, E.row[j].size);
@@ -414,7 +414,7 @@ void editorSave() {
   }
 
   free(buf);
-  editorSetStatusMessage("Can't save! I/O error: %s", strerros(errno));
+  editorSetStatusMessage("Can't save! I/O error: %s", strerror(errno));
 }
 
 /*** output ***/
@@ -711,7 +711,7 @@ int main(int argc, char *argv[]) {
     editorOpen(argv[1]);
   }
 
-  editorSetStatusMessage("HELP: Ctrl-S = savew | Ctrl-Q = quit");
+  editorSetStatusMessage("HELP: Ctrl-S = save | Ctrl-Q = quit");
 
   while (1) {
     editorRefreshScreen();
